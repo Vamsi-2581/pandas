@@ -887,3 +887,24 @@ class TestDataFrameShift:
             index=[values[2], values[1], values[3]],
         )
         tm.assert_frame_equal(result, expected)
+
+
+    def test_shift_empty_frame_multiple_periods(self):
+        df = pd.DataFrame(
+            {
+                "price": pd.Series(dtype="int64"),
+                "volume": pd.Series(dtype="float64"),
+            }
+        )
+
+        result = df.shift(periods=[0, 1], suffix="_lag")
+
+        expected = pd.DataFrame(
+            {
+                "price_lag_0": pd.Series(dtype="int64"),
+                "volume_lag_0": pd.Series(dtype="float64"),
+                "price_lag_1": pd.Series(dtype="int64"),
+                "volume_lag_1": pd.Series(dtype="float64"),
+            }
+        )
+        tm.assert_frame_equal(result, expected)
